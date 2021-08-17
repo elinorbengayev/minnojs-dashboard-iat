@@ -20,14 +20,14 @@
 					if (tab.value == 'practice') {
 						if(settings.parameters.practiceBlock == false) return null;
 					}
-					return m('button.tablinks', {
+					return m('button', {
 	                    class: ctrl.tab == tab.value ? 'active' : '',
 	                    onclick:function(){
 							ctrl.tab = tab.value;
 							ctrl.index = ctrl.setIndex(tab.value);
 						}},tab.text);
 				})),
-				m('.tabContent', [
+				m('.div', [
 					m.component(tabs[ctrl.index].component, settings, defaultSettings, tabs[ctrl.index].rowsDesc)
 				])
 			]);
@@ -38,15 +38,15 @@
 	    parameters : {isQualtrics:false, base_url:''},
 	    category: {name: 'Black people', title: {media: { word : 'Black people'}, css: {color: '#31b404', 'font-size': '2em'}, height: 4},
 	        stimulusMedia: [{word: 'Tayron'}, {word: 'Malik'},{word: 'Terrell'},{word: 'Jazamin'},{word: 'Tiara'},{word: 'Shanice'}],
-	        css : {color:'#31b404', 'font-size':'2em'}
+	        stimulusCss : {color:'#31b404', 'font-size':'2em'}
 	    },
 	    attribute1: {name: 'Unpleasant', title: {media: { word : 'Unpleasant'}, css: {color: '#31b404', 'font-size': '2em'}, height: 4},
 	        stimulusMedia: [{word: 'Bomb'}, {word: 'Abuse'},{word: 'Sadness'},{word: 'Pain'},{word: 'Poison'},{word: 'Grief'}],
-	        css : {color:'#31b404', 'font-size':'2em'}
+	        stimulusCss : {color:'#31b404', 'font-size':'2em'}
 	    },
 	    attribute2: {name: 'Pleasant', title: {media: { word : 'Pleasant'}, css: {color: '#31b404', 'font-size': '2em'}, height: 4},
 	        stimulusMedia: [{word: 'Paradise'}, {word: 'Pleasure'},{word: 'Cheer'},{word: 'Wonderful'},{word: 'Splendid'},{word: 'Love'}],
-	        css : {color:'#31b404', 'font-size':'2em'}
+	        stimulusCss : {color:'#31b404', 'font-size':'2em'}
 	    },
 	    trialsByBlock : 
 	    [//Each object in this array defines a block
@@ -154,11 +154,11 @@
 	            if(parameters[name] == true) return 'Touch' 
 	            else return 'Keyboard';
 	        if (name == 'isQualtrics')
-	            if (parameters[name] == true) return 'Qualtrics'
+	            if (parameters[name] == true){return 'Qualtrics'}
 	            else return 'Regular';
 	        return parameters[name];
 	    }
-	    function set(name){ return function(value){ 
+	    function set(name){return function(value){ 
 	        if (name == 'isTouch')
 	            if(value == 'Keyboard') return parameters[name] = false;
 	            else return parameters[name] = true;
@@ -171,26 +171,20 @@
 
 	function view(ctrl){
 	    return m('.container' , [
-	       m('.row top-buffer',[
-	           m('.col',{style:{'margin-bottom':'7px'}},[
-	           m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	               m('button.btn btn btn-danger', {onclick: ctrl.reset},[
-	                   m('i.fas fa-undo fa-sm'), ' Reset'
-	               ]),
-	               m('button.btn btn btn-danger',{onclick: ctrl.clear},[
-	                   m('i.far fa-trash-alt fa-sm'), ' Clear'
-	               ])
-	           ])
-	       ])
-	       ]),
 	        ctrl.rows.slice(0,-1).map((row) => {
+	            if ((row.name === 'fullscreen' || row.name === 'showDebriefing') && ctrl.get('isQualtrics') === 'Regular') {
+	                return null;
+	            }
 	            return m('.row top-buffer', [
 	                    m('.col-auto info-buffer',[
 	                        m('i.fa.fa-info-circle'),
 	                        m('.card.info-box.card-header', [row.desc])
 	                    ]),
 	                    m('.col-3 param-buffer', row.label),
-	                    row.options ? //case of isTouch and isQualtrics
+	                    row.name.includes('key') ? //case of keys parameters
+	                    m('.col-8 param-buffer',
+	                    m('input[type=text].form-control',{style: {width:'3rem'}, value:ctrl.get(row.name), onchange:m.withAttr('value', ctrl.set(row.name))}))                    
+	                    : row.options ? //case of isTouch and isQualtrics
 	                    m('.col-8 param-buffer',
 	                    m('select.form-control',{value: ctrl.get(row.name), onchange:m.withAttr('value',ctrl.set(row.name)), style: {width: '8.3rem', height:'2.8rem'}},[
 	                    row.options.map(function(option){return m('option', option);})
@@ -199,26 +193,223 @@
 	                    m('.col-8 param-buffer',
 	                    m('input[type=checkbox]', {onclick: m.withAttr('checked', ctrl.set(row.name)), checked: ctrl.get(row.name)}))
 	                    ])
-	                }),
+	        }),
 	        m('.row top-buffer', [
 	            m('.col-auto info-buffer',[
 	                m('i.fa.fa-info-circle'),
-	                m('.card.info-box.card-header',{style:{width: '500px'}}, ['If your task has any images, enter here the path to that images folder. It can be a full url, or a relative URL to the folder that will host this script'])
+	                m('.card.info-box.card-header', ['If your task has any images, enter here the path to that images folder. It can be a full url, or a relative URL to the folder that will host this script'])
 	            ]),
 	            m('.col-3 param-buffer', 'Image\'s URL'),
 	            m('.col-8 param-buffer',
 	                m('input[type=text].form-control',{style: {width: '30rem'}, value:ctrl.get('base_url'), onchange:m.withAttr('value', ctrl.set('base_url'))}))
+	        ]),
+	        m('.row.space',[
+	            m('.col',{style:{'margin-bottom':'7px'}},[
+	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
+	                        m('i.fas fa-undo fa-sm'), ' Reset'
+	                    ]),
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
+	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
+	                    ]),
+	                ]),
+	            ]),
 	        ])
 	    ])
 	}
+
+	function clone(obj){
+	    return JSON.parse(JSON.stringify(obj));
+	}
+
+	function checkMissingElementName(element, name_to_display, error_msg){
+	    let containsImage = false;
+	    
+	    //check for missing titles and names
+	    if(element.name.length == 0)
+	        error_msg.push(name_to_display+'\'s\ name is missing');
+
+	    if(element.title.media.image !== undefined){
+	        containsImage = true;
+	        if(element.title.media.image.length == 0){
+	            error_msg.push(name_to_display+'\'s\ title is missing');   
+	        } 
+	    }
+	    else {
+	        if(element.title.media.word.length == 0)
+	            error_msg.push(name_to_display+'\'s\ title is missing');
+	    }
+	    let stimulusMedia = element.stimulusMedia;
+	    
+	    //if there an empty stimulli list
+	    if (stimulusMedia.length === 0) 
+	        error_msg.push(name_to_display+'\'s stimuli list is empty, please enter at least one stimulus.');
+	    
+	    //check if the stimuli contains images
+	    for(let i = 0; i < stimulusMedia.length ;i++)
+	        if(stimulusMedia[i].image) containsImage = true;
+	    
+
+	    return containsImage
+	}
+
+
+	    // function checkMissingElementName(element, name_to_display){
+	    //     if(settings[element].name.length == 0)
+	    //         error_msg.push(name_to_display+'\'s\ name is missing');
+	    
+	    //     if(settings[element].title.media.image !== undefined){
+	    //         containsImage = true
+	    //         if(settings[element].title.media.image.length == 0){
+	    //             error_msg.push(name_to_display+'\'s\ title is missing');
+	    //         }
+	    //     }
+	    //     else{
+	    //         if(settings[element].title.media.word.length == 0){
+	    //             error_msg.push(name_to_display+'\'s\ title is missing');
+	    //         }   
+	    //     }
+	    
+	    //     let stimulusMedia = settings[element].stimulusMedia
+	    //     for(let i = 0; i < stimulusMedia.length ;i++){
+	    //         if(stimulusMedia[i].image) containsImage = true
+	    //     }
+	    // }
 
 	let outputComponent = {
 	    view:view$1,
 	    controller:controller$1,
 	};
 
+	function controller$1(settings, defaultSettings, clearBlock){
+	    let error_msg = [];
+
+	    validityCheck(settings);
+	    settings = updateMediaSettings();
+
+	    return {error_msg, createFile, printToPage};
+
+	    function validityCheck(settings){
+	        let containsImage = false;
+
+	        let temp1 = checkMissingElementName(settings.category, 'Category', error_msg);
+	        let temp2 = checkMissingElementName(settings.attribute1, 'First Attribute', error_msg); 
+	        let temp3 = checkMissingElementName(settings.attribute2, 'Second Attribute', error_msg);
+	        if (temp1 || temp2 || temp3) containsImage = true;
+	        else containsImage = false; 
+	        
+	        if(settings.parameters.base_url.length == 0 && containsImage)
+	            error_msg.push('Image\'s\ url is missing and there is an image in the study');    
+	        
+	        //check for blocks problems
+	        let currBlocks = clone(settings.trialsByBlock);
+	        clearBlock = clone(clearBlock[0]); //blocks parameters with zeros as the values, used to check if the current parameters are also zeros.
+	        delete clearBlock.block;
+	        
+	        let count = 0;
+	        let temp_err_msg = [];
+	        currBlocks.forEach(function(element, index){ //remove those parameters for the comparsion
+	            delete element.block;
+	            if(JSON.stringify(element) === JSON.stringify(clearBlock)){
+	                temp_err_msg.push('All block #'+(index+1)+' parameters equals to 0, that will result in skiping this block'); 
+	                count++;
+	            }   
+	        });
+	        if (count === currBlocks.length)
+	            error_msg.push('All the block\'s parameters equals to 0, that will result in not showing the task at all');    
+	        else if (temp_err_msg.length !==0) error_msg = error_msg.concat(temp_err_msg);
+
+	    }
+
+	    function createFile(fileType){
+	        return function(){
+	            let output,textFileAsBlob;
+	            let downloadLink = document.createElement('a');
+	            if (fileType === 'JS') {
+	                output = toString();
+	                textFileAsBlob = new Blob([output], {type:'text/plain'});
+	                downloadLink.download = 'STIAT.js'; }
+	            else {
+	                output = updateSettings();
+	                textFileAsBlob = new Blob([JSON.stringify(output,null,4)], {type : 'application/json'});
+	                downloadLink.download = 'STIAT.json'; }
+	            if (window.webkitURL != null) {downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);}
+	            else {
+	                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+	                downloadLink.style.display = 'none';
+	                document.body.appendChild(downloadLink);
+	            }
+	            downloadLink.click();
+	        };
+	    }
+	  
+	    function printToPage(){
+	        return function() {
+	            let para = document.getElementById('textDiv');
+	            para.style.visibility = 'visible';
+	            let text_area = document.getElementById('textArea');
+	            text_area.value = toString();
+	        };
+	    }
+	    
+	    function toString(){
+	        return toScript(updateSettings());
+	    }
+	    
+	    function updateMediaSettings(){
+	        //update attributes to be compatible to STIAT
+	        let settings_output = clone(settings);
+	        settings_output.category.media = settings_output.category.stimulusMedia;
+	        delete settings_output.category.stimulusMedia;
+	        settings_output.attribute1.media = settings_output.attribute1.stimulusMedia;
+	        delete settings_output.attribute1.stimulusMedia;
+	        settings_output.attribute2.media = settings_output.attribute2.stimulusMedia;
+	        delete settings_output.attribute2.stimulusMedia;
+
+	        settings_output.category.css = settings_output.category.stimulusCss; 
+	        delete settings_output.category.stimulusCss; 
+	        settings_output.attribute1.css = settings_output.attribute1.stimulusCss; 
+	        delete settings_output.attribute1.stimulusCss; 
+	        settings_output.attribute2.css = settings_output.attribute2.stimulusCss; 
+	        delete settings_output.attribute2.stimulusCss; 
+	        return settings_output
+	    }
+	    
+	    function updateSettings(){
+	        let output={
+	            category: settings.category,
+	            attribute1: settings.attribute1,
+	            attribute2: settings.attribute2,
+	            base_url: settings.parameters.base_url,
+	            remindError: settings.parameters.remindError,
+	            trialsByBlock: settings.trialsByBlock,
+	            blockOrder: settings.blockOrder,
+	            switchSideBlock: settings.switchSideBlock
+	        };
+	        if(settings.parameters.isQualtrics){
+	            output.isQualtrics=settings.parameters.isQualtrics;
+	        }
+	        Object.assign(output, settings.text); 
+	        return output;
+	    }
+	    
+	    function toScript(output){
+	        return `define(['pipAPI' ,'${output.isQualtrics ? 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/stiat/qualtrics/qstiat6.js': 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/stiat/stiat6.js'}'], function(APIConstructor, stiatExtension) {var API = new APIConstructor(); return stiatExtension(${JSON.stringify(output,null,4)});});`;
+	    }
+	}
+
 	function view$1(ctrl){
 	    return m('.container',[
+	        m('.alert alert-danger', {role:'alert',style: {'margin-top':'20px',visibility: ctrl.error_msg.length === 0 ? 'hidden' : 'visible'}},[
+	            m('h6','Some problems were found in your script, it\'s recommended to fix them before proceeding to download:'),
+	            m('ul',[
+	                ctrl.error_msg.map(function(err){
+	                    return m('li',err);
+	                })
+	            ])
+	        ]),
 	        m('.row justify-content-md-center',[
 	            m('.col-auto'),
 	            m('col-auto',[
@@ -249,120 +440,32 @@
 
 	}
 
-	function controller$1(settings){
-	    updateMediaSettings();
-	    return {createFile:createFile, printToPage:printToPage, toString:toString,
-	        updateSettings:updateSettings, toScript:toScript};
-
-	    function createFile(fileType){
-	        return function(){
-	            let output,textFileAsBlob;
-	            let downloadLink = document.createElement('a');
-	            if (fileType === 'JS') {
-	                output = toString();
-	                textFileAsBlob = new Blob([output], {type:'text/plain'});
-	                downloadLink.download = 'STIAT.js'; }
-	            else {
-	                output = updateSettings();
-	                textFileAsBlob = new Blob([JSON.stringify(output,null,4)], {type : 'application/json'});
-	                downloadLink.download = 'STIAT.json'; }
-	            if (window.webkitURL != null) {downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);}
-	            else {
-	                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-	                downloadLink.style.display = 'none';
-	                document.body.appendChild(downloadLink);
-	            }
-	            downloadLink.click();
-	        };
-	    }
-	    
-	    // function toConsole(settings){
-	    //     return function(){
-	    //         window.settings = settings;
-	    //         console.log(settings);
-	    //     }
-	    // }
-	    
-	    function printToPage(){
-	        return function() {
-	            let para = document.getElementById('textDiv');
-	            para.style.visibility = 'visible';
-	            let text_area = document.getElementById('textArea');
-	            text_area.value = toString();
-	        };
-	    }
-	    
-	    function toString(){
-	        return toScript(updateSettings());
-	    }
-	    
-	    function updateMediaSettings(){
-	        settings.category.media = settings.category.stimulusMedia;
-	        delete settings.category.stimulusMedia;
-	        settings.attribute1.media = settings.attribute1.stimulusMedia;
-	        delete settings.attribute1.stimulusMedia;
-	        settings.attribute2.media = settings.attribute2.stimulusMedia;
-	        delete settings.attribute2.stimulusMedia;
-	    }
-	    
-	    function updateSettings(){
-	        let output={
-	            category: settings.category,
-	            attribute1: settings.attribute1,
-	            attribute2: settings.attribute2,
-	            base_url: settings.parameters.base_url,
-	            remindError: settings.parameters.remindError,
-	            trialsByBlock: settings.trialsByBlock,
-	            blockOrder: settings.blockOrder,
-	            switchSideBlock: settings.switchSideBlock
-	        };
-	        if(settings.parameters.isQualtrics){
-	            output.isQualtrics=settings.parameters.isQualtrics;
-	        }
-	        Object.assign(output, settings.text); 
-	        return output;
-	    }
-	    
-	    function toScript(output){
-	        return `define(['pipAPI' ,'${output.isQualtrics ? 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/stiat/qualtrics/qstiat6.js': 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/stiat/stiat6.js'}'], function(APIConstructor, stiatExtension) {var API = new APIConstructor(); return stiatExtension(${JSON.stringify(output,null,4)});});`;
-	    }
-	}
-
 	let textComponent = {
 	    controller:controller$2,
 	    view:view$2
 	};
 
 	function controller$2(settings, defaultSettings, rows){
-	    //let textparameters = settings.text
 	    var textparameters;
 	    var isTouch = settings.parameters.isTouch;
 	    isTouch ? textparameters = settings.touch_text : textparameters = settings.text;
-	    return {reset:reset, clear:clear, set:set, get:get, rows: rows.slice(0,-1)};
+	    return {reset:reset, clear:clear, set:set, get:get, rows: rows.slice(0,-2), isTouch};
 	    
 	    function reset(){isTouch ? Object.assign(textparameters, defaultSettings.touch_text) : Object.assign(textparameters, defaultSettings.text);}
-	    function clear(){ Object.assign(textparameters, rows.slice(-1)[0]); }
-	    function get(name){ return textparameters[name]; }
+	    function clear(){isTouch ? Object.assign(textparameters, rows.slice(-1)[0]) : Object.assign(textparameters, rows.slice(-2)[0]);}
+	    function get(name){return textparameters[name];}
 	    function set(name){ 
 	        return function(value){return textparameters[name] = value;};
 	    }
 	}
 
-	function view$2(ctrl){
+	function view$2(ctrl, settings){
 	    return m('.container' , [
-	        m('.row top-buffer',[
-	            m('.col',{style:{'margin-bottom':'7px'}},[
-	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
-	                        m('i.fas fa-undo fa-sm'), ' Reset'
-	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
-	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
 	        ctrl.rows.map(function(row) {
+	            //if touch parameter is choosen, don't show the irrelevant text parametes
+	            if (settings.parameters.isTouch === true && row.nameTouch === undefined) {
+	                return null;
+	            }
 	            return m('.row top-buffer', [
 	                m('.col-auto info-buffer',[
 	                    m('i.fa.fa-info-circle'),
@@ -370,15 +473,25 @@
 	                ]),
 	                m('.col-3 param-buffer', {style:{width: '30%'}},row.label),
 	                m('.col-8 param-buffer', [
-	                    m('textarea.form-control',{style: {width: '30rem' ,height: '5.5rem'}, value:ctrl.get(row.name), onchange:m.withAttr('value', ctrl.set(row.name))})
+	                    m('textarea.form-control',{style: {width: '30rem' ,height: '5.5rem'}, value:ctrl.get(ctrl.isTouch ? row.nameTouch : row.name), onchange:m.withAttr('value', ctrl.set(ctrl.isTouch ? row.nameTouch : row.name))})
 	                ])
 	            ]);
 	        }),
+	        m('.row.space',[
+	            m('.col',{style:{'margin-bottom':'7px'}},[
+	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
+	                        m('i.fas fa-undo fa-sm'), ' Reset'
+	                    ]),
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
+	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
+	                    ]),
+	                ]),
+	            ]),
+	        ]),
 	    ]);
-	}
-
-	function clone(obj){
-	    return JSON.parse(JSON.stringify(obj));
 	}
 
 	let blocksComponent = {
@@ -416,17 +529,18 @@
 	            element.sharedAttTrials = 0, 
 	            element.categoryTrials = 0; 
 	        });
-	        Object.assign(settings.switchSideBlock, 0);
+	        settings.switchSideBlock = 0;
+	        settings.blockOrder = defaultSettings.blockOrder;
 	    }
 	    function get(name, index){ return blocks[index][name]; }
 	    function set(name, index, type){ 
 	        if (type === 'text') return function(value){return blocks[index][name] = value; };
-	        return function(value){return blocks[index][name] = Math.round(value);};
+	        return function(value){return blocks[index][name] = Math.abs(Math.round(value));};
 	    }
 	    function getParameters(name){ return settings[name]; }
 	    function setParameters(name, type){ 
 	        if (type === 'select') return function(value){return settings[name] = value; };
-	        return function(value){return settings[name] = Math.round(value);};
+	        return function(value){return settings[name] = Math.abs(Math.round(value));};
 	    }
 	    function updateChoosenBlocks(e, index){
 	        if (choosenBlocksList.includes(index) && !e.target.checked){
@@ -449,7 +563,6 @@
 	        blocks.push(clone(clearBlock[0]));
 	        blocks.slice(-1)[0]['block'] = blocks.length;
 	        if (blocks.length === 30) addFlag('hidden'); //limit blocks to 30
-
 	    }
 	    function removeBlocks(){
 	        if (blocks.length < 4) {
@@ -476,18 +589,6 @@
 
 	function view$3(ctrl){
 	    return m('.container' , [
-	        m('.row top-buffer',[
-	            m('.col',{style:{'margin-bottom':'7px'}},[
-	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
-	                        m('i.fas fa-undo fa-sm'), ' Reset'
-	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
-	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
 	        m('.row.space top-buffer', [
 	            m('.col-sm-2.space',[
 	                m('i.fa.fa-info-circle'),
@@ -508,7 +609,7 @@
 	                m('span', [' ', 'Switch side block'])
 	            ]),
 	            m('.col-sm-9',
-	                m('input[type=number].form-control',{value: ctrl.getParameters('switchSideBlock'), onchange:m.withAttr('value',ctrl.setParameters('switchSideBlock')), style: {width: '4em'}}))   
+	                m('input[type=number].form-control',{value: ctrl.getParameters('switchSideBlock'), onchange:m.withAttr('value',ctrl.setParameters('switchSideBlock')), style: {width: '4em'}, min:0}))   
 	        ]),
 	        ctrl.blocks.map(function(block) {
 	            let index = ctrl.blocks.indexOf(block);
@@ -536,7 +637,7 @@
 	                                m('span', [' ', 'Number of mini-blocks: '])
 	                            ]),
 	                            m('.col-sm-9', [
-	                                m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set('miniBlocks', index,'number')), value: ctrl.get('miniBlocks', index)})
+	                                m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set('miniBlocks', index,'number')), value: ctrl.get('miniBlocks', index), min:0})
 	                            ])
 	                        ]),
 	                        m('.row.space',[
@@ -546,7 +647,7 @@
 	                                m('span', [' ', 'Number of single attribute trials: '])
 	                            ]),
 	                            m('.col-sm-9', [
-	                                m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set('singleAttTrials', index,'number')), value: ctrl.get('singleAttTrials', index)})
+	                                m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set('singleAttTrials', index,'number')), value: ctrl.get('singleAttTrials', index), min:0})
 	                            ])
 	                        ]),
 	                        m('.row.space',[
@@ -556,7 +657,7 @@
 	                                m('span', [' ', 'Number of shared key attribute trials: '])
 	                            ]),
 	                            m('.col-sm-9', [
-	                                m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set('sharedAttTrials', index,'number')), value: ctrl.get('sharedAttTrials', index)})
+	                                m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set('sharedAttTrials', index,'number')), value: ctrl.get('sharedAttTrials', index), min:0})
 	                            ])
 	                        ]),
 	                        m('.row.space',[
@@ -566,7 +667,7 @@
 	                                m('span', [' ', 'Number of category trials: '])
 	                            ]),
 	                            m('.col-sm-9', [
-	                                m('input[type=number].form-control',{style:{width:'4em'}, onchange: m.withAttr('value', ctrl.set('categoryTrials', index,'number')), value: ctrl.get('categoryTrials', index)})
+	                                m('input[type=number].form-control',{style:{width:'4em'}, onchange: m.withAttr('value', ctrl.set('categoryTrials', index,'number')), value: ctrl.get('categoryTrials', index), min:0})
 	                            ])
 	                        ])
 	                    ])
@@ -581,8 +682,22 @@
 	                    m('i.fas fa-check'), ' Choose Blocks to Remove']),
 	                m('button.btn btn btn-danger',{onclick: ctrl.removeBlocks},[
 	                    m('i.far fa-minus-square'), ' Remove Choosen Blocks']),
+	            ])
+	        ]),
+	        m('.row.space',[
+	            m('.col',{style:{'margin-bottom':'7px'}},[
+	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
+	                        m('i.fas fa-undo fa-sm'), ' Reset'
+	                    ]),
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
+	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
+	                    ]),
+	                ]),
+	            ]),
 	        ])
-	    ])
 	    ]);
 	}
 
@@ -591,27 +706,27 @@
 	    view:view$4,
 	};
 
-	function controller$4(object,settings, stimuliList){
+	function controller$4(object, settings, stimuliList){
 	    let element = settings[object.key];
 	    let fields = {
 	        newStimulus : m.prop(''),
-	        elementType: m.prop(object.key.includes('category') ? 'Category' : 'Attribute'),
+	        elementType: m.prop(object.key.includes('attribute') ? 'Attribute' : 'Category'),
 	        titleType: m.prop(element.title.media.word === undefined ? 'image' : 'word'),
 	        titleHidden: m.prop(''), //weather the category design flags will be visible
 	        selectedStimuli: m.prop(''),
 	        stimuliHidden: m.prop(''),
 	    }; 
+
 	    return {fields, set:set, get:get, addStimulus:addStimulus, 
-	        updateSelectedStimuli:updateSelectedStimuli,removeChosenStimuli:removeChosenStimuli, removeAllStimuli:removeAllStimuli, 
+	        updateSelectedStimuli:updateSelectedStimuli, removeChosenStimuli:removeChosenStimuli, removeAllStimuli:removeAllStimuli, 
 	        updateTitleType:updateTitleType, resetStimuliList:resetStimuliList};
 	    
-	    function get(name,media,type){
-	        if(!element[name]) name = 'css'; 
+	    function get(name, media, type){
 	        if (name == 'title' && media == null && type == null) { //special case - return the title's value (word/image)
 	            if (element.title.media.word == undefined) return element.title.media.image;
 	            return element.title.media.word;
 	        }
-	        if (media !=null && type!=null) {
+	        if (media != null && type != null) {
 	            if (type == 'font-size') {
 	                return parseFloat((element[name][media][type].replace("em","")));
 	            }
@@ -623,10 +738,10 @@
 	        return element[name]; 
 	    }
 	    function set(name, media, type){ 
-	        if(!element[name]) name = 'css'; 
 	        return function(value){ 
-	            if (media !=null && type!=null) {
+	            if (media != null && type != null) {
 	                if (type == 'font-size') {
+	                    value = Math.abs(value);
 	                    if (value == 0) { 
 	                        alert("Font's size must be bigger then 0");
 	                        return element[name][media][type]; 
@@ -637,6 +752,7 @@
 	            }
 	            else if (media == 'color') return element[name][media] = value;
 	            else if (media == 'font-size') {
+	                value = Math.abs(value);
 	                if (value == 0) { 
 	                    alert("Font's size must be bigger then 0");
 	                    return element[name][media]; 
@@ -707,8 +823,8 @@
 	            ]),
 	            m('.col-sm-2', ctrl.fields.elementType()+'\'s type:',
 	                [
-	                    m('select.custom-select',{value: ctrl.get('title','media','word') === undefined || ctrl.get('title','media','word') === '' ? 'image' : 'word', onchange:m.withAttr('value',ctrl.updateTitleType())},[
-	                        ctrl.fields.titleType(ctrl.get('title','media','word') === undefined || ctrl.get('title','media','word') === '' ? 'image' : 'word'),
+	                    m('select.custom-select',{value: ctrl.get('title','media','word') === undefined ? 'image' : 'word', onchange:m.withAttr('value',ctrl.updateTitleType())},[
+	                        ctrl.fields.titleType(ctrl.get('title','media','word') === undefined ? 'image' : 'word'),
 	                        ctrl.fields.titleHidden(ctrl.fields.titleType() === 'word' ? 'visible' : 'hidden'),
 	                        m('option', 'word'),
 	                        m('option', 'image')
@@ -806,20 +922,23 @@
 
 	function view$5(ctrl,settings, defaultSettings) {
 	    return m('.container', [
-	        m('.row top-buffer',[
-	            m('col', m('h1.categoryHeadline','Category')),
+	        m('.row top-buffer',
+	            m('col', m('h1.categoryHeadline','Category'))),
+	        m.component(elementComponent, {key: 'category'} ,settings, defaultSettings.category.stimulusMedia),
+	        m('.row.space',[
 	            m('.col',{style:{'margin-bottom':'7px'}},[
 	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
 	                        m('i.fas fa-undo fa-sm'), ' Reset'
 	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
 	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
-	        m.component(elementComponent, {key: 'category'} ,settings, defaultSettings.category.stimulusMedia),
+	                    ]),
+	                ]),
+	            ]),
+	        ])
 	    ]);
 	}
 
@@ -829,7 +948,12 @@
 	};
 
 	function controller$6(settings, defaultSettings, clearElement){
-	    return {reset:reset, clear:clear};
+	    let tabs = [
+	        {value: 'attribute1', text: 'First Attribute'},
+	        {value: 'attribute2', text: 'Second Attribute'},
+	    ];
+	    let curr_tab = tabs[0].value; // set default tab
+	    return {reset:reset, clear:clear, tabs, curr_tab};
 	    function reset(){
 	        Object.assign(settings.attribute1,  JSON.parse(JSON.stringify(defaultSettings.attribute1)));
 	        Object.assign(settings.attribute2,  JSON.parse(JSON.stringify(defaultSettings.attribute2)));}
@@ -840,24 +964,31 @@
 	}
 
 	function view$6(ctrl,settings, defaultSettings) {
-	    return m('.container', [
-	        m('.row top-buffer',[
-	            m('col', m('h1.categoryHeadline','First Attribute')),
+	    return m('.container.space', [
+	        m('.tab',{style:{width:'19.5em'}}, ctrl.tabs.map(function(tab){
+	            return m('button', {
+	                class: ctrl.curr_tab == tab.value ? 'active' : '',
+	                onclick:function(){
+	                    ctrl.curr_tab = tab.value;
+	                }},tab.text);
+	        })),
+	        m('.div', [
+	            m.component(elementComponent, {key:ctrl.curr_tab}, settings, defaultSettings[ctrl.curr_tab].stimulusMedia),
+	        ]),
+	        m('.row.space',[
 	            m('.col',{style:{'margin-bottom':'7px'}},[
 	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
 	                        m('i.fas fa-undo fa-sm'), ' Reset'
 	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
 	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
-	        m.component(elementComponent,{key: 'attribute1'} ,settings, defaultSettings.attribute1.stimulusMedia),
-	        m('h1.categoryHeadline','Second Attribute'),
-	        m('.row top-buffer'),
-	        m.component(elementComponent,{key:'attribute2'}, settings, defaultSettings.attribute2.stimulusMedia)
+	                    ]),
+	                ]),
+	            ]),
+	        ])
 	    ]);
 	}
 
@@ -895,17 +1026,23 @@
 	        };
 	    }
 	    function updateMediaSettings(input){
-	        input.category.stimulusMedia = input.category.media;
-	        delete input.category.media;
-	        input.attribute1.stimulusMedia = input.attribute1.media;
-	        delete input.attribute1.media;
-	        input.attribute2.stimulusMedia = input.attribute2.media;
-	        delete input.attribute2.media;
+	        //update attributes to be compatible to IAT so that elementComponent can be used.
+	        settings.category.stimulusMedia = input.category.media;
+	        delete settings.category.media;
+	        settings.attribute1.stimulusMedia = input.attribute1.media;
+	        delete settings.attribute1.media;
+	        settings.attribute2.stimulusMedia = input.attribute2.media;
+	        delete settings.attribute2.media;
+
+	        settings.category.stimulusCss = input.category.css;
+	        delete settings.category.css;
+	        settings.attribute1.stimulusCss = input.attribute1.css;
+	        delete settings.attribute1.css;
+	        settings.attribute2.stimulusCss = input.attribute2.css;
+	        delete settings.attribute2.css;
 	    }
 	    function updateSettings(input) {
-	        console.log("before", );
-	        updateMediaSettings(input);
-	        console.log("after");
+
 	        settings.category = input.category;
 	        settings.attribute1 = input.attribute1;
 	        settings.attribute2 = input.attribute2;
@@ -922,15 +1059,17 @@
 	        settings.trialsByBlock = input.trialsByBlock;
 	        settings.blockOrder = input.blockOrder;
 	        settings.switchSideBlock = input.switchSideBlock;
-	        // settings = input;
-	        //console.log(settings);
+
+	        updateMediaSettings(input); 
+
 	        
 	    }
 	}
 
 	let links = {IAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-iat/', 
 		BIAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-biat/',
-		STIAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-stiat/'
+		STIAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-stiat/',
+		SPF: '#'
 	};
 
 	let helpComponent = {
@@ -968,26 +1107,17 @@
 	    {name: 'instTemplateCategoryRight', label:'Instructions in Right Category', desc: 'The instructions in the right category.'},
 	    {name: 'instTemplateCategoryLeft', label:'Instructions in Left Category', desc: 'The instructions in the left category.'},
 	    {textOnError:'', leftKeyText:'', rightKeyText:'', orKeyText:'', remindErrorText:'',finalText:'',
-	    instTemplatePractice:'', instTemplateCategoryRight:'', instTemplateCategoryLeft:''}
+	    instTemplatePractice:'', instTemplateCategoryRight:'', instTemplateCategoryLeft:''},
+	    {} //an empty element
 	];
-
-	// let blocksDesc = [
-	//     {label:'Block 1', numTrialBlocks:'blockCategories_nTrials', numMiniBlocks: 'blockCategories_nMiniBlocks', desc:'Will present the categories.'},
-	//     {label:'Block 2', numTrialBlocks:'blockAttributes_nTrials', numMiniBlocks: 'blockAttributes_nMiniBlocks', desc:'Will present the attributes.'},
-	//     {label:'Blocks 3 and 6', numTrialBlocks:'blockFirstCombined_nTrials', numMiniBlocks: 'blockFirstCombined_nMiniBlocks', desc:'The first combined block.'},
-	//     {label:'Blocks 4 and 7', numTrialBlocks:'blockSecondCombined_nTrials', numMiniBlocks: 'blockSecondCombined_nMiniBlocks', desc:'The second combined block.'},
-	//     {label:'Block 5', numTrialBlocks:'blockSwitch_nTrials', numMiniBlocks: 'blockSwitch_nMiniBlocks', desc:'Reversing the attributes block. Some have recommended using 50 trials in this block.'},
-	//     {blockCategories_nTrials: 0,blockCategories_nMiniBlocks:0, blockAttributes_nTrials:0,blockAttributes_nMiniBlocks:0,
-	//         blockFirstCombined_nTrials:0, blockFirstCombined_nMiniBlocks:0, blockSecondCombined_nTrials:0, blockSecondCombined_nMiniBlocks:0,
-	//         blockSwitch_nTrials:0, blockSwitch_nMiniBlocks:0, randomBlockOrder: false, randomAttSide : false}
-	// ];
 
 	let categoryClear = [{name: '', title: {media: {word: ''}, css: {color: '#000000', 'font-size': '0em'}, height: 4},
 	    stimulusMedia: [],
 	    stimulusCss : {color:'#000000', 'font-size':'0em'}}];
 
-	let blockClear =  
-	    [//Each object in this array defines a block
+	let clearBlock =  
+	    [
+	        //Each of the following defines a block
 	        {
 	            instHTML : '', 
 	            block : 1,
@@ -995,49 +1125,17 @@
 	            singleAttTrials : 0, 
 	            sharedAttTrials : 0, 
 	            categoryTrials : 0 
-	        }, 
-	        { 
-	            instHTML : '', 
-	            block : 2, 
-	            miniBlocks : 0, 
-	            singleAttTrials : 0, 
-	            sharedAttTrials : 0, 
-	            categoryTrials : 0
-	        }, 
-	        { 
-	            instHTML : '', 
-	            block : 3, 
-	            miniBlocks : 0, 
-	            singleAttTrials : 0, 
-	            sharedAttTrials : 0, 
-	            categoryTrials : 0
-	        }, 
-	        { 
-	            instHTML : '', 
-	            block : 4, 
-	            miniBlocks : 0, 
-	            singleAttTrials : 0, 
-	            sharedAttTrials : 0, 
-	            categoryTrials : 0
-	        }, 
-	        { 
-	            instHTML : '', 
-	            block : 5, 
-	            miniBlocks : 0, 
-	            singleAttTrials : 0, 
-	            sharedAttTrials : 0, 
-	            categoryTrials : 0
 	        }
 	    ];
 
 
 	let tabs = [
 	    {value: 'parameters', text: 'General parameters', component: parametersComponent, rowsDesc: parametersDesc },
-	    {value: 'blocks', text: 'Blocks', component: blocksComponent, rowsDesc: blockClear},
+	    {value: 'blocks', text: 'Blocks', component: blocksComponent, rowsDesc: clearBlock},
 	    {value: 'category', text: 'Category', component: categoriesComponent, rowsDesc: categoryClear},
 	    {value: 'attributes', text: 'Attributes', component: attributesComponent, rowsDesc: categoryClear},
 	    {value: 'text', text: 'Texts', component: textComponent, rowsDesc: textDesc},
-	    {value: 'output', text: 'Complete', component: outputComponent},
+	    {value: 'output', text: 'Complete', component: outputComponent, rowsDesc: clearBlock},
 	    {value: 'import', text: 'Import', component: importComponent},
 	    {value: 'help', text: 'Help', component: helpComponent, rowsDesc:'STIAT'}
 	];

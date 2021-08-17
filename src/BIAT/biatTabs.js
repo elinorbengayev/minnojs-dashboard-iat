@@ -31,14 +31,16 @@ let blocksDesc = [
 ];
 
 let textDesc = [
-    {name: 'instTemplate', label:'Instructions', desc: 'Instructions'},
-    {name: 'remindErrorText', label:'Screen\'s Bottom (error reminder)', desc:'We use this text to remind participants what happens on error. Replace this text if you do not require participants to correct their error responses (see General Parameters page).'},
-    {name: 'leftKeyText', label:'Top-left text (about the left key)', desc: 'We use this text to remind participants what key to use for a left response.'},
-    {name: 'rightKeyText', label:'Top-right text (about the right key)', desc: 'We use this text to remind participants what key to use for a right response.'},
-    {name: 'orKeyText', label:'Or', desc: 'We show this text in the combined blocks to separate between the two categories that use the same key.'},
-    {name: 'finalText', label:'Text shown at the end', desc: 'Text shown at the end'},
-    {remindErrorText:'', leftKeyText:'', rightKeyText:'', orKeyText:'', 
-        instTemplate:'', finalText:''}
+    {name: 'instTemplate', nameTouch: 'instTemplateTouch',label:'Instructions', desc: 'Instructions'},
+    {name: 'remindErrorText', nameTouch: 'remindErrorTextTouch' , label:'Screen\'s Bottom (error reminder)', desc:'We use this text to remind participants what happens on error. Replace this text if you do not require participants to correct their error responses (see General Parameters page).'},
+    {name: 'leftKeyText', nameTouch:'leftKeyTextTouch',label:'Top-left text (about the left key)', desc: 'We use this text to remind participants what key to use for a left response.'},
+    {name: 'rightKeyText', nameTouch:'rightKeyTextTouch',label:'Top-right text (about the right key)', desc: 'We use this text to remind participants what key to use for a right response.'},
+    {name: 'orText', label:'Or', desc: 'We show this text in the combined blocks to separate between the two categories that use the same key.'},
+    {name: 'finalText', nameTouch: 'finalTouchText' , label:'Text shown at the end', desc: 'Text shown at the end'},
+    {remindErrorText:'', leftKeyText:'', rightKeyText:'', orText:'', 
+        instTemplate:'', finalText:''},
+    {remindErrorTextTouch:'', leftKeyTextTouch:'', rightKeyTextTouch:'',  
+    instTemplateTouch:'', finalTouchText:''}
 ];
 
 let elementClear = [{
@@ -63,15 +65,9 @@ let tabs = [
     {value: 'categories', text: 'Categories', component: categoriesComponent, rowsDesc: elementClear},
     {value: 'attributes', text: 'Attributes', component: attributesComponent, rowsDesc: elementClear},
     {value: 'text', text: 'Texts', component: textComponent, rowsDesc: textDesc},
-    {value: 'output', text: 'Complete', component: outputComponent},
+    {value: 'output', text: 'Complete', component: outputComponent, rowsDesc: blocksDesc},
     {value: 'import', text: 'Import', component: importComponent},
     {value: 'help', text: 'Help', component: helpComponent, rowsDesc:'BIAT'}
 ];
-
-//remove practice related elements
-if (!defaultSettings.parameters.practiceBlock) {
-    blocksDesc.splice(2,1); 
-    tabs.splice(2,1);
-}
 
 export default tabs;

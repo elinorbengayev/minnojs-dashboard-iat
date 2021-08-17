@@ -20,14 +20,14 @@
 					if (tab.value == 'practice') {
 						if(settings.parameters.practiceBlock == false) return null;
 					}
-					return m('button.tablinks', {
+					return m('button', {
 	                    class: ctrl.tab == tab.value ? 'active' : '',
 	                    onclick:function(){
 							ctrl.tab = tab.value;
 							ctrl.index = ctrl.setIndex(tab.value);
 						}},tab.text);
 				})),
-				m('.tabContent', [
+				m('.div', [
 					m.component(tabs[ctrl.index].component, settings, defaultSettings, tabs[ctrl.index].rowsDesc)
 				])
 			]);
@@ -59,28 +59,25 @@
 	        blockSwitch_nTrials:28, blockSwitch_nMiniBlocks:7, randomBlockOrder: true, randomAttSide : false
 	    },
 	    text: {
-	        textOnError:'<p style="font-size:0.6em;font-family:arial serif;text-align:center;">' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. '+'Press the other key to continue.<p/>',
+	        remindErrorText:'<p style="font-size:0.6em;font-family:arial serif;text-align:center;">' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. '+'Press the other key to continue.<p/>',
 	        leftKeyText:'Press "E" for ',
 	        rightKeyText:'Press "I" for',
-	        orKeyText:'or',
-	        AttributesBlockInstructions:'<div><p  style="font-size:20px;font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger on the <b>E</b> key for items that belong to the category <font-color="#0000ff">leftAttribute.</font>' +'<br/>Put a right finger on the <b>I</b> key for items that belong to the category <font-color="#0000ff">rightAttribute</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Press the other key to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
-	        CategoriesBlockInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger on the <b>E</b> key for items that belong to the category <font-color="#336600">leftCategory</font>. ' +'<br/>Put a right finger on the <b>I</b> key for items that belong to the category <font-color="#336600">rightCategory</font>.<br/>' +'Items will appear one at a time.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Press the other key to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
-	        FirstCombinedBlockInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Use the <b>E</b> key for <font-color="#336600">leftCategory</font> and for <font-color="#0000ff">leftAttribute</font>.<br/>' +'Use the <b>I</b> key for <font-color="#336600">rightCategory</font> and for  <font-color="#0000ff">rightAttribute</font>.<br/>' +'Each item belongs to only one category.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Press the other key to continue.<br/>' + '<u>Go as fast as you can</u> while being accurate.<br/><br/></p>' +'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
-	        SecondCombinedBlockInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'This is the same as the previous part.<br/>' +'Use the <b>E</b> key for <font-color="#336600">leftCategory</font> and for <font-color="#0000ff">leftAttribute</font>.<br/>' +'Use the <b>I</b> key for <font-color="#336600">rightCategory</font> and for  <font-color="#0000ff">rightAttribute</font>.<br/>' +'Each item belongs to only one category.<br/><br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>' +'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
-	        SwitchedCategoriesInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">'+'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'<b>Watch out, the labels have changed position!</b><br/>' +'Put the left finger on the <b>E</b> key for <font-color="#336600">leftCategory</font>.<br/>' +'Put the right finger on the <b>I</b> key for <font-color="#336600">rightCategory</font>.<br/><br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>' +'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
-	        PreDebriefingText:'Press space to continue to your feedback '
+	        orText:'or',
+	        instAttributePractice:'<div><p  style="font-size:20px;font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger on the <b>E</b> key for items that belong to the category <font-color="#0000ff">leftAttribute.</font>' +'<br/>Put a right finger on the <b>I</b> key for items that belong to the category <font-color="#0000ff">rightAttribute</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Press the other key to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
+	        instCategoriesPractice:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger on the <b>E</b> key for items that belong to the category <font-color="#336600">leftCategory</font>. ' +'<br/>Put a right finger on the <b>I</b> key for items that belong to the category <font-color="#336600">rightCategory</font>.<br/>' +'Items will appear one at a time.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Press the other key to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
+	        instFirstCombined :'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Use the <b>E</b> key for <font-color="#336600">leftCategory</font> and for <font-color="#0000ff">leftAttribute</font>.<br/>' +'Use the <b>I</b> key for <font-color="#336600">rightCategory</font> and for  <font-color="#0000ff">rightAttribute</font>.<br/>' +'Each item belongs to only one category.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Press the other key to continue.<br/>' + '<u>Go as fast as you can</u> while being accurate.<br/><br/></p>' +'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
+	        instSecondCombined :'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'This is the same as the previous part.<br/>' +'Use the <b>E</b> key for <font-color="#336600">leftCategory</font> and for <font-color="#0000ff">leftAttribute</font>.<br/>' +'Use the <b>I</b> key for <font-color="#336600">rightCategory</font> and for  <font-color="#0000ff">rightAttribute</font>.<br/>' +'Each item belongs to only one category.<br/><br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>' +'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
+	        instSwitchCategories :'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">'+'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'<b>Watch out, the labels have changed position!</b><br/>' +'Put the left finger on the <b>E</b> key for <font-color="#336600">leftCategory</font>.<br/>' +'Put the right finger on the <b>I</b> key for <font-color="#336600">rightCategory</font>.<br/><br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>' +'<p style="text-align:center;">Press the <b>space bar</b> when you are ready to start.</font></p></div>',
+	        preDebriefingText :'Press space to continue to your feedback '
 	    },
 	    touch_text : {
-	        textOnError:'<p style="font-size:1.4em;font-family:arial serif">' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. '+'Touch the other side to continue.<p/>',
-	        leftKeyText:'Press "E" for ',
-	        rightKeyText:'Press "I" for',
-	        orKeyText:'or',
-	        AttributesBlockInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftAttribute.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightAttribute</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
-	        CategoriesBlockInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
-	        FirstCombinedBlockInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
-	        SecondCombinedBlockInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
-	        SwitchedCategoriesInstructions:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial"><br/>'+'Watch out, the labels have changed position!<br/>'+'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
-	        PreDebriefingText:'Touch the bottom green area to continue to the next task.'
+	        remindErrorTextTouch:'<p style="font-size:1.4em;font-family:arial serif">' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. '+'Touch the other side to continue.<p/>',
+	        instAttributePracticeTouch:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftAttribute.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightAttribute</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
+	        instCategoriesPracticeTouch:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
+	        instFirstCombinedTouch:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
+	        instSecondCombinedTouch :'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial">' +'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
+	        instSwitchCategoriesTouch:'<div><p style="font-size:20px; font-family:arial serif;text-align:center;">' +'<font-color="#000000"><u>Part blockNum of nBlocks </u><br/><br/></p>' +'<p style="font-size:20px; text-align:left; vertical-align:bottom; margin-left:10px; font-family:arial"><br/>'+'Watch out, the labels have changed position!<br/>'+'Put a left finger over the <b>left</b> green area for items that belong to the category <font-color="#0000ff">leftCategory.</font>' +'<br/>Put a right finger over the <b>right</b> green area for items that belong to the category <font-color="#0000ff">rightCategory</font>.<br/><br/>' +'If you make a mistake, a red <font-color="#ff0000"><b>X</b></font> will appear. ' +'Touch the other side to continue.<br/>' +'<u>Go as fast as you can</u> while being accurate.<br/><br/></p>'+'<p style="text-align:center;">Touch the <b>green area</b> when you are ready to start.</font></p></div>',
+	        preDebriefingTouchText :'Touch the bottom green area to continue to the next task.'
 	    }
 	};
 
@@ -99,11 +96,11 @@
 	            if(parameters[name] == true) return 'Touch' 
 	            else return 'Keyboard';
 	        if (name == 'isQualtrics')
-	            if (parameters[name] == true) return 'Qualtrics'
+	            if (parameters[name] == true){return 'Qualtrics'}
 	            else return 'Regular';
 	        return parameters[name];
 	    }
-	    function set(name){ return function(value){ 
+	    function set(name){return function(value){ 
 	        if (name == 'isTouch')
 	            if(value == 'Keyboard') return parameters[name] = false;
 	            else return parameters[name] = true;
@@ -116,26 +113,20 @@
 
 	function view(ctrl){
 	    return m('.container' , [
-	       m('.row top-buffer',[
-	           m('.col',{style:{'margin-bottom':'7px'}},[
-	           m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	               m('button.btn btn btn-danger', {onclick: ctrl.reset},[
-	                   m('i.fas fa-undo fa-sm'), ' Reset'
-	               ]),
-	               m('button.btn btn btn-danger',{onclick: ctrl.clear},[
-	                   m('i.far fa-trash-alt fa-sm'), ' Clear'
-	               ])
-	           ])
-	       ])
-	       ]),
 	        ctrl.rows.slice(0,-1).map((row) => {
+	            if ((row.name === 'fullscreen' || row.name === 'showDebriefing') && ctrl.get('isQualtrics') === 'Regular') {
+	                return null;
+	            }
 	            return m('.row top-buffer', [
 	                    m('.col-auto info-buffer',[
 	                        m('i.fa.fa-info-circle'),
 	                        m('.card.info-box.card-header', [row.desc])
 	                    ]),
 	                    m('.col-3 param-buffer', row.label),
-	                    row.options ? //case of isTouch and isQualtrics
+	                    row.name.includes('key') ? //case of keys parameters
+	                    m('.col-8 param-buffer',
+	                    m('input[type=text].form-control',{style: {width:'3rem'}, value:ctrl.get(row.name), onchange:m.withAttr('value', ctrl.set(row.name))}))                    
+	                    : row.options ? //case of isTouch and isQualtrics
 	                    m('.col-8 param-buffer',
 	                    m('select.form-control',{value: ctrl.get(row.name), onchange:m.withAttr('value',ctrl.set(row.name)), style: {width: '8.3rem', height:'2.8rem'}},[
 	                    row.options.map(function(option){return m('option', option);})
@@ -144,34 +135,215 @@
 	                    m('.col-8 param-buffer',
 	                    m('input[type=checkbox]', {onclick: m.withAttr('checked', ctrl.set(row.name)), checked: ctrl.get(row.name)}))
 	                    ])
-	                }),
+	        }),
 	        m('.row top-buffer', [
 	            m('.col-auto info-buffer',[
 	                m('i.fa.fa-info-circle'),
-	                m('.card.info-box.card-header',{style:{width: '500px'}}, ['If your task has any images, enter here the path to that images folder. It can be a full url, or a relative URL to the folder that will host this script'])
+	                m('.card.info-box.card-header', ['If your task has any images, enter here the path to that images folder. It can be a full url, or a relative URL to the folder that will host this script'])
 	            ]),
 	            m('.col-3 param-buffer', 'Image\'s URL'),
 	            m('.col-8 param-buffer',
 	                m('input[type=text].form-control',{style: {width: '30rem'}, value:ctrl.get('base_url'), onchange:m.withAttr('value', ctrl.set('base_url'))}))
+	        ]),
+	        m('.row.space',[
+	            m('.col',{style:{'margin-bottom':'7px'}},[
+	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
+	                        m('i.fas fa-undo fa-sm'), ' Reset'
+	                    ]),
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
+	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
+	                    ]),
+	                ]),
+	            ]),
 	        ])
 	    ])
 	}
 
+	function clone(obj){
+	    return JSON.parse(JSON.stringify(obj));
+	}
+
+	function checkMissingElementName(element, name_to_display, error_msg){
+	    let containsImage = false;
+	    
+	    //check for missing titles and names
+	    if(element.name.length == 0)
+	        error_msg.push(name_to_display+'\'s\ name is missing');
+
+	    if(element.title.media.image !== undefined){
+	        containsImage = true;
+	        if(element.title.media.image.length == 0){
+	            error_msg.push(name_to_display+'\'s\ title is missing');   
+	        } 
+	    }
+	    else {
+	        if(element.title.media.word.length == 0)
+	            error_msg.push(name_to_display+'\'s\ title is missing');
+	    }
+	    let stimulusMedia = element.stimulusMedia;
+	    
+	    //if there an empty stimulli list
+	    if (stimulusMedia.length === 0) 
+	        error_msg.push(name_to_display+'\'s stimuli list is empty, please enter at least one stimulus.');
+	    
+	    //check if the stimuli contains images
+	    for(let i = 0; i < stimulusMedia.length ;i++)
+	        if(stimulusMedia[i].image) containsImage = true;
+	    
+
+	    return containsImage
+	}
+
+
+	    // function checkMissingElementName(element, name_to_display){
+	    //     if(settings[element].name.length == 0)
+	    //         error_msg.push(name_to_display+'\'s\ name is missing');
+	    
+	    //     if(settings[element].title.media.image !== undefined){
+	    //         containsImage = true
+	    //         if(settings[element].title.media.image.length == 0){
+	    //             error_msg.push(name_to_display+'\'s\ title is missing');
+	    //         }
+	    //     }
+	    //     else{
+	    //         if(settings[element].title.media.word.length == 0){
+	    //             error_msg.push(name_to_display+'\'s\ title is missing');
+	    //         }   
+	    //     }
+	    
+	    //     let stimulusMedia = settings[element].stimulusMedia
+	    //     for(let i = 0; i < stimulusMedia.length ;i++){
+	    //         if(stimulusMedia[i].image) containsImage = true
+	    //     }
+	    // }
+
 	let outputComponent = {
+	    controller:controller$1,
 	    view:view$1
 	};
 
-	function view$1(ctrl,settings){
+
+	function controller$1(settings, defaultSettings, blocksObject){
+	    let error_msg = [];
+
+	    validityCheck(settings);
+
+	    return {error_msg, createFile, printToPage};
+
+	    function validityCheck(settings){
+	        let containsImage = false;
+
+	        let temp1 = checkMissingElementName(settings.category1, 'First Category', error_msg);
+	        let temp2 = checkMissingElementName(settings.category2, 'Second Category', error_msg);
+	        let temp3 = checkMissingElementName(settings.attribute1, 'First Attribute', error_msg); 
+	        let temp4 = checkMissingElementName(settings.attribute2, 'Second Attribute', error_msg);
+	        if (temp1 || temp2 || temp3 || temp4) containsImage = true;
+	        else containsImage = false; 
+	        
+	        if(settings.parameters.base_url.length == 0 && containsImage)
+	            error_msg.push('Image\'s\ url is missing and there is an image in the study');    
+	        
+	        //check for blocks problems
+	        let currBlocks = clone(settings.blocks);
+	        let clearBlocks = blocksObject.slice(-1)[0]; //blocks parameters with zeros as the values, used to check if the current parameters are also zeros.
+	        
+	        ['randomBlockOrder', 'randomAttSide'].forEach(function(key){ //remove those parameters for the comparsion
+	            delete currBlocks[key];
+	            delete clearBlocks[key];
+	        });
+
+	        if(JSON.stringify(currBlocks) === JSON.stringify(clearBlocks))
+	            error_msg.push('All the block\'s parameters equals to 0, that will result in not showing the task at all');    
+	        blocksObject.slice(0,-1).map(function(block){
+	            if(settings.blocks[block.numTrialBlocks] !== 0 && settings.blocks[block.numMiniBlocks] === 0) 
+	                error_msg.push(block.label+'\'s number of trials is '+settings.blocks[block.numTrialBlocks]+' and the number of mini blocks is set as 0. If you wish to skip this block, set both of those parametrs to 0.');
+	            });
+
+	    }
+
+	    function createFile(settings, fileType){
+	        return function(){ 
+	            let output,textFileAsBlob;
+	            let downloadLink = document.createElement('a');
+	            if (fileType === 'JS') {
+	                output = toString(settings);
+	                textFileAsBlob = new Blob([output], {type:'text/plain'});
+	                downloadLink.download = 'IAT.js'; }
+	            else {
+	                output = updateSettings(settings);
+	                textFileAsBlob = new Blob([JSON.stringify(output,null,4)], {type : 'application/json'});
+	                downloadLink.download = 'IAT.json'; }
+	            if (window.webkitURL != null) {downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);}
+	            else {
+	                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+	                downloadLink.style.display = 'none';
+	                document.body.appendChild(downloadLink);
+	            }
+	            downloadLink.click();
+	        };
+	    }
+
+	    function printToPage(settings){
+	        return function() {
+	            let para = document.getElementById('textDiv');
+	            para.style.visibility = 'visible';
+	            let text_area = document.getElementById('textArea');
+	            text_area.value = toString(settings);
+	        };
+	    }
+
+	    function toString(settings){
+	        return toScript(updateSettings(settings));
+	    }
+
+	    function updateSettings(settings){
+	        let output={
+	            category1: settings.category1,
+	            category2: settings.category2,
+	            attribute1: settings.attribute1,
+	            attribute2: settings.attribute2,
+	            base_url: settings.parameters.base_url,
+	            remindError: settings.parameters.remindError,
+	            errorCorrection: settings.parameters.errorCorrection,
+	            isTouch: settings.parameters.isTouch
+	        };
+	        if(settings.parameters.isQualtrics){
+	            output.isQualtrics=settings.parameters.isQualtrics;
+	            output.showDebriefing=settings.parameters.showDebriefing;
+	            output.fullscreen=settings.parameters.fullscreen;
+	        }
+	        Object.assign(output, settings.blocks);
+	        settings.parameters.isTouch ? Object.assign(output, settings.touch_text) : Object.assign(output, settings.text); 
+	        return output;
+	        }
+
+	        function toScript(output){
+	            return `define(['pipAPI' ,'${output.isQualtrics ? 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat9.js': 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat8.js'}'], function(APIConstructor, iatExtension) {var API = new APIConstructor(); return iatExtension(${JSON.stringify(output,null,4)});});`;
+	        }
+	    }
+
+	function view$1(ctrl, settings){
 	    return m('.container',[
+	        m('.alert alert-danger', {role:'alert',style: {'margin-top':'20px',visibility: ctrl.error_msg.length === 0 ? 'hidden' : 'visible'}},[
+	            m('h6','Some problems were found in your script, it\'s recommended to fix them before proceeding to download:'),
+	            m('ul',[
+	                ctrl.error_msg.map(function(err){
+	                    return m('li',err);
+	                })
+	            ])
+	        ]),
 	        m('.row justify-content-md-center',[
 	            m('.col-auto'),
 	            m('col-auto',[
 	                m('.btn-group-vertical', {style:{'data-toggle':'buttons'}},[
-	                    m('button.CreateFile', {onclick: createFile(settings,'JS')},[
+	                    m('button.CreateFile', {onclick: ctrl.createFile(settings,'JS')},[
 	                        m('i.fas fa-file-download'), ' Download Script']),
-	                    m('button.CreateJSONFile', {onclick: createFile(settings,'JSON')},[
+	                    m('button.CreateJSONFile', {onclick: ctrl.createFile(settings,'JSON')},[
 	                        m('i.fas fa-file-download'), ' Download JSON']),
-	                    m('button.CreateJSONFile', {onclick: printToPage(settings)}, 'Print to Browser')
+	                    m('button.CreateJSONFile', {onclick: ctrl.printToPage(settings)}, 'Print to Browser')
 	                ])
 	            ]),
 	            m('.col-auto',{style:{'padding':'1.7em 0em 5em 1em',float:'left'}},[
@@ -187,114 +359,39 @@
 	                ])
 	            ]),
 	        ]),
+
 	        m('div',{id: 'textDiv', style: {visibility: 'hidden', 'padding' :'0 0 0 3.5em'}},
 	            m('textarea.form-control', {id:'textArea', value:'', style: {width : '60rem', height: '25rem'}}))
 	    ]);
 
 	}
 
-	function createFile(settings, fileType){
-	    return function(){
-	        let output,textFileAsBlob;
-	        let downloadLink = document.createElement('a');
-	        if (fileType === 'JS') {
-	            output = toString(settings);
-	            textFileAsBlob = new Blob([output], {type:'text/plain'});
-	            downloadLink.download = 'IAT.js'; }
-	        else {
-	            output = updateSettings(settings);
-	            textFileAsBlob = new Blob([JSON.stringify(output,null,4)], {type : 'application/json'});
-	            downloadLink.download = 'IAT.json'; }
-	        if (window.webkitURL != null) {downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);}
-	        else {
-	            downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-	            downloadLink.style.display = 'none';
-	            document.body.appendChild(downloadLink);
-	        }
-	        downloadLink.click();
-	    };
-	}
-
-	// function toConsole(settings){
-	//     return function(){
-	//         window.settings = settings;
-	//         console.log(settings);
-	//     }
-	// }
-
-	function printToPage(settings){
-	    return function() {
-	        let para = document.getElementById('textDiv');
-	        para.style.visibility = 'visible';
-	        let text_area = document.getElementById('textArea');
-	        text_area.value = toString(settings);
-	    };
-	}
-
-	function toString(settings){
-	    return toScript(updateSettings(settings));
-	}
-
-	function updateSettings(settings){
-	    let output={
-	        category1: settings.category1,
-	        category2: settings.category2,
-	        attribute1: settings.attribute1,
-	        attribute2: settings.attribute2,
-	        base_url: settings.parameters.base_url,
-	        remindError: settings.parameters.remindError,
-	        errorCorrection: settings.parameters.errorCorrection,
-	        isTouch: settings.parameters.isTouch
-	    };
-	    if(settings.parameters.isQualtrics){
-	        output.isQualtrics=settings.parameters.isQualtrics;
-	        output.showDebriefing=settings.parameters.showDebriefing;
-	        output.fullscreen=settings.parameters.fullscreen;
-	    }
-	    Object.assign(output, settings.blocks);
-	    settings.parameters.isTouch ? Object.assign(output, settings.touch_text) : Object.assign(output, settings.text); 
-	    return output;
-	}
-
-	function toScript(output){
-	    return `define(['pipAPI' ,'${output.isQualtrics ? 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat9.js': 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat8.js'}'], function(APIConstructor, iatExtension) {var API = new APIConstructor(); return iatExtension(${JSON.stringify(output,null,4)})});`;
-	}
-
 	let textComponent = {
-	    controller:controller$1,
+	    controller:controller$2,
 	    view:view$2
 	};
 
-	function controller$1(settings, defaultSettings, rows){
-	    //let textparameters = settings.text
+	function controller$2(settings, defaultSettings, rows){
 	    var textparameters;
 	    var isTouch = settings.parameters.isTouch;
 	    isTouch ? textparameters = settings.touch_text : textparameters = settings.text;
-	    return {reset:reset, clear:clear, set:set, get:get, rows: rows.slice(0,-1)};
+	    return {reset:reset, clear:clear, set:set, get:get, rows: rows.slice(0,-2), isTouch};
 	    
 	    function reset(){isTouch ? Object.assign(textparameters, defaultSettings.touch_text) : Object.assign(textparameters, defaultSettings.text);}
-	    function clear(){ Object.assign(textparameters, rows.slice(-1)[0]); }
-	    function get(name){ return textparameters[name]; }
+	    function clear(){isTouch ? Object.assign(textparameters, rows.slice(-1)[0]) : Object.assign(textparameters, rows.slice(-2)[0]);}
+	    function get(name){return textparameters[name];}
 	    function set(name){ 
 	        return function(value){return textparameters[name] = value;};
 	    }
 	}
 
-	function view$2(ctrl){
+	function view$2(ctrl, settings){
 	    return m('.container' , [
-	        m('.row top-buffer',[
-	            m('.col',{style:{'margin-bottom':'7px'}},[
-	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
-	                        m('i.fas fa-undo fa-sm'), ' Reset'
-	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
-	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
 	        ctrl.rows.map(function(row) {
+	            //if touch parameter is choosen, don't show the irrelevant text parametes
+	            if (settings.parameters.isTouch === true && row.nameTouch === undefined) {
+	                return null;
+	            }
 	            return m('.row top-buffer', [
 	                m('.col-auto info-buffer',[
 	                    m('i.fa.fa-info-circle'),
@@ -302,19 +399,33 @@
 	                ]),
 	                m('.col-3 param-buffer', {style:{width: '30%'}},row.label),
 	                m('.col-8 param-buffer', [
-	                    m('textarea.form-control',{style: {width: '30rem' ,height: '5.5rem'}, value:ctrl.get(row.name), onchange:m.withAttr('value', ctrl.set(row.name))})
+	                    m('textarea.form-control',{style: {width: '30rem' ,height: '5.5rem'}, value:ctrl.get(ctrl.isTouch ? row.nameTouch : row.name), onchange:m.withAttr('value', ctrl.set(ctrl.isTouch ? row.nameTouch : row.name))})
 	                ])
 	            ]);
 	        }),
+	        m('.row.space',[
+	            m('.col',{style:{'margin-bottom':'7px'}},[
+	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
+	                        m('i.fas fa-undo fa-sm'), ' Reset'
+	                    ]),
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
+	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
+	                    ]),
+	                ]),
+	            ]),
+	        ]),
 	    ]);
 	}
 
 	let blocksComponent = {
-	    controller:controller$2,
+	    controller:controller$3,
 	    view:view$3
 	};
 
-	function controller$2(settings, defaultSettings, rows){
+	function controller$3(settings, defaultSettings, rows){
 	    let blocks = settings.blocks;
 	    return {reset:reset, clear:clear, set:set, get:get, rows: rows};
 	    
@@ -323,24 +434,12 @@
 	    function get(name){ return blocks[name]; }
 	    function set(name, type){ 
 	        if (type === 'checkbox') return function(value){return blocks[name] = value; };
-	        return function(value){return blocks[name] = Math.round(value);};
+	        return function(value){return blocks[name] = Math.abs(Math.round(value));};
 	    }
 	}
 
 	function view$3(ctrl){
 	    return m('.container' ,{style:{height: '500px'}}, [
-	        m('.row top-buffer',[
-	            m('.col',{style:{'margin-bottom':'7px'}},[
-	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
-	                        m('i.fas fa-undo fa-sm'), ' Reset'
-	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
-	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
 	        ctrl.rows.slice(0,-1).map(function(row) {
 	            return m('.row top-buffer', [
 	                m('.col-auto block-buffer',[
@@ -356,20 +455,33 @@
 	                    m('.row', [
 	                        m('.col-4 block-buffer', 'Number of trials: '),
 	                        m('.col block-buffer', [
-	                            m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set(row.numTrialBlocks, 'number')), value: ctrl.get(row.numTrialBlocks)})
+	                            m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set(row.numTrialBlocks, 'number')), value: ctrl.get(row.numTrialBlocks), min:'0'})
 	                        ])
 	                    ]),
 	                    m('.row',[
 	                        m('.col-4 block-buffer', 'Number of mini-blocks: '),
 	                        m('.col block-buffer', [
-	                            m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set(row.numMiniBlocks, 'number')), value: ctrl.get(row.numMiniBlocks)})
+	                            m('input[type=number].form-control',{style:{width:'4em'},onchange: m.withAttr('value', ctrl.set(row.numMiniBlocks, 'number')), value: ctrl.get(row.numMiniBlocks), min:'0'})
 	                        ])
 	                    ])
 	                ])
 	            ]);
 	                    
-	        }
-	        ),
+	        }),
+	        m('.row.space',[
+	            m('.col',{style:{'margin-bottom':'7px'}},[
+	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
+	                        m('i.fas fa-undo fa-sm'), ' Reset'
+	                    ]),
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
+	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
+	                    ]),
+	                ]),
+	            ]),
+	        ]),
 	        m('.alert alert-info', {role:'alert', style: {position: 'relative', width: '25rem', left: '62%',top: '-650px',  border: '2px solid #bcdae2'}},[
 	            m('h4','More information:'),
 	            m('p','By default, we separate each block into mini-blocks of four trials. In Blocks 3, 4, 6, and 7, '+
@@ -380,36 +492,35 @@
 	            m('hr'),
 	            m('p','To cancel a block, set the number of trials to 0 (useful for 5-blocks IATs).')
 	        ])
-
 	    ]);
 	}
 
 	let elementComponent = {
-	    controller:controller$3,
+	    controller:controller$4,
 	    view:view$4,
 	};
 
-	function controller$3(object,settings, stimuliList){
+	function controller$4(object, settings, stimuliList){
 	    let element = settings[object.key];
 	    let fields = {
 	        newStimulus : m.prop(''),
-	        elementType: m.prop(object.key.includes('category') ? 'Category' : 'Attribute'),
+	        elementType: m.prop(object.key.includes('attribute') ? 'Attribute' : 'Category'),
 	        titleType: m.prop(element.title.media.word === undefined ? 'image' : 'word'),
 	        titleHidden: m.prop(''), //weather the category design flags will be visible
 	        selectedStimuli: m.prop(''),
 	        stimuliHidden: m.prop(''),
 	    }; 
+
 	    return {fields, set:set, get:get, addStimulus:addStimulus, 
-	        updateSelectedStimuli:updateSelectedStimuli,removeChosenStimuli:removeChosenStimuli, removeAllStimuli:removeAllStimuli, 
+	        updateSelectedStimuli:updateSelectedStimuli, removeChosenStimuli:removeChosenStimuli, removeAllStimuli:removeAllStimuli, 
 	        updateTitleType:updateTitleType, resetStimuliList:resetStimuliList};
 	    
-	    function get(name,media,type){
-	        if(!element[name]) name = 'css'; 
+	    function get(name, media, type){
 	        if (name == 'title' && media == null && type == null) { //special case - return the title's value (word/image)
 	            if (element.title.media.word == undefined) return element.title.media.image;
 	            return element.title.media.word;
 	        }
-	        if (media !=null && type!=null) {
+	        if (media != null && type != null) {
 	            if (type == 'font-size') {
 	                return parseFloat((element[name][media][type].replace("em","")));
 	            }
@@ -421,10 +532,10 @@
 	        return element[name]; 
 	    }
 	    function set(name, media, type){ 
-	        if(!element[name]) name = 'css'; 
 	        return function(value){ 
-	            if (media !=null && type!=null) {
+	            if (media != null && type != null) {
 	                if (type == 'font-size') {
+	                    value = Math.abs(value);
 	                    if (value == 0) { 
 	                        alert("Font's size must be bigger then 0");
 	                        return element[name][media][type]; 
@@ -435,6 +546,7 @@
 	            }
 	            else if (media == 'color') return element[name][media] = value;
 	            else if (media == 'font-size') {
+	                value = Math.abs(value);
 	                if (value == 0) { 
 	                    alert("Font's size must be bigger then 0");
 	                    return element[name][media]; 
@@ -505,8 +617,8 @@
 	            ]),
 	            m('.col-sm-2', ctrl.fields.elementType()+'\'s type:',
 	                [
-	                    m('select.custom-select',{value: ctrl.get('title','media','word') === undefined || ctrl.get('title','media','word') === '' ? 'image' : 'word', onchange:m.withAttr('value',ctrl.updateTitleType())},[
-	                        ctrl.fields.titleType(ctrl.get('title','media','word') === undefined || ctrl.get('title','media','word') === '' ? 'image' : 'word'),
+	                    m('select.custom-select',{value: ctrl.get('title','media','word') === undefined ? 'image' : 'word', onchange:m.withAttr('value',ctrl.updateTitleType())},[
+	                        ctrl.fields.titleType(ctrl.get('title','media','word') === undefined ? 'image' : 'word'),
 	                        ctrl.fields.titleHidden(ctrl.fields.titleType() === 'word' ? 'visible' : 'hidden'),
 	                        m('option', 'word'),
 	                        m('option', 'image')
@@ -586,51 +698,92 @@
 	}
 
 	let categoriesComponent = {
-	    controller:controller$4,
+	    controller:controller$5,
 	    view:view$5
 	};
 
-	function controller$4(settings, defaultSettings, clearElement){
-	    return {reset:reset, clear:clear};
+	function controller$5(settings, defaultSettings, clearElement){
+	    let tabs = [
+	        {value: 'category1', text: 'First Category'},
+	        {value: 'category2', text: 'Second Category'},
+	    ];
+	    let curr_tab = tabs[0].value; // set default tab
+
+	    return {reset:reset, clear:clear, tabs, curr_tab};
 	    function reset(){
-	        Object.assign(settings.category1,  JSON.parse(JSON.stringify(defaultSettings.category1)));
-	        Object.assign(settings.category2, JSON.parse(JSON.stringify(defaultSettings.category2)));
+	        Object.assign(settings[this.curr_tab],  JSON.parse(JSON.stringify(defaultSettings[this.curr_tab])));
 	    }
 	    function clear(){
-	        Object.assign(settings.category1, JSON.parse(JSON.stringify(clearElement[0])));
-	        Object.assign(settings.category2, JSON.parse(JSON.stringify(clearElement[0])));
+	        Object.assign(settings[this.curr_tab], JSON.parse(JSON.stringify(clearElement[0])));
 	    }
 	}
 
+	// function view(ctrl,settings, defaultSettings) {
+	//     return m('.container', [
+	//         m('.row top-buffer',
+	//             m('col', m('h1.categoryHeadline','First Category'))),
+	//         m.component(elementComponent, {key: 'category1'} ,settings, defaultSettings.category1.stimulusMedia),
+	//         m('h1.categoryHeadline','Second Category'),
+	//         m('.row top-buffer'),
+	//         m.component(elementComponent, {key:'category2'}, settings, defaultSettings.category2.stimulusMedia),
+	//         m('.row.space',[
+	//             m('.col',{style:{'margin-bottom':'7px'}},[
+	//                 m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
+	//                     m('button.btn btn-secondary', 
+	//                         {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
+	//                         m('i.fas fa-undo fa-sm'), ' Reset'
+	//                     ]),
+	//                     m('button.btn btn-danger',
+	//                         {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
+	//                         m('i.far fa-trash-alt fa-sm'), ' Clear'
+	//                     ]),
+	//                 ]),
+	//             ]),
+	//         ])
+	//     ]);
+	// }
+
 	function view$5(ctrl,settings, defaultSettings) {
-	    return m('.container', [
-	        m('.row top-buffer',[
-	            m('col', m('h1.categoryHeadline','First Category')),
+	    return m('.container.space', [
+	        m('.tab',{style:{width:'20.4em'}},ctrl.tabs.map(function(tab){
+	            return m('button', {
+	                class: ctrl.curr_tab == tab.value ? 'active' : '',
+	                onclick:function(){
+	                    ctrl.curr_tab = tab.value;
+	                }},tab.text);
+	        })),
+	        m('.div', [
+	            m.component(elementComponent, {key:ctrl.curr_tab}, settings, defaultSettings[ctrl.curr_tab].stimulusMedia),
+	        ]),
+	        m('.row.space',[
 	            m('.col',{style:{'margin-bottom':'7px'}},[
 	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
 	                        m('i.fas fa-undo fa-sm'), ' Reset'
 	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
 	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
-	        m.component(elementComponent, {key: 'category1'} ,settings, defaultSettings.category1.stimulusMedia),
-	        m('h1.categoryHeadline','Second Category'),
-	        m('.row top-buffer'),
-	        m.component(elementComponent, {key:'category2'}, settings, defaultSettings.category2.stimulusMedia)
+	                    ]),
+	                ]),
+	            ]),
+	        ])
 	    ]);
 	}
 
 	let attributesComponent = {
-	    controller:controller$5,
+	    controller:controller$6,
 	    view:view$6
 	};
 
-	function controller$5(settings, defaultSettings, clearElement){
-	    return {reset:reset, clear:clear};
+	function controller$6(settings, defaultSettings, clearElement){
+	    let tabs = [
+	        {value: 'attribute1', text: 'First Attribute'},
+	        {value: 'attribute2', text: 'Second Attribute'},
+	    ];
+	    let curr_tab = tabs[0].value; // set default tab
+	    return {reset:reset, clear:clear, tabs, curr_tab};
 	    function reset(){
 	        Object.assign(settings.attribute1,  JSON.parse(JSON.stringify(defaultSettings.attribute1)));
 	        Object.assign(settings.attribute2,  JSON.parse(JSON.stringify(defaultSettings.attribute2)));}
@@ -641,29 +794,36 @@
 	}
 
 	function view$6(ctrl,settings, defaultSettings) {
-	    return m('.container', [
-	        m('.row top-buffer',[
-	            m('col', m('h1.categoryHeadline','First Attribute')),
+	    return m('.container.space', [
+	        m('.tab',{style:{width:'19.5em'}}, ctrl.tabs.map(function(tab){
+	            return m('button', {
+	                class: ctrl.curr_tab == tab.value ? 'active' : '',
+	                onclick:function(){
+	                    ctrl.curr_tab = tab.value;
+	                }},tab.text);
+	        })),
+	        m('.div', [
+	            m.component(elementComponent, {key:ctrl.curr_tab}, settings, defaultSettings[ctrl.curr_tab].stimulusMedia),
+	        ]),
+	        m('.row.space',[
 	            m('.col',{style:{'margin-bottom':'7px'}},[
 	                m('.btn-group btn-group-toggle', {style:{'data-toggle':'buttons', float: 'right'}},[
-	                    m('button.btn btn btn-danger', {onclick: ctrl.reset},[
+	                    m('button.btn btn-secondary', 
+	                        {title:'Reset all current fields to default values', onclick: () => confirm('Are you sure you want to reset the current form?\n This action is permanent') ? ctrl.reset() : null},[
 	                        m('i.fas fa-undo fa-sm'), ' Reset'
 	                    ]),
-	                    m('button.btn btn btn-danger',{onclick: ctrl.clear},[
+	                    m('button.btn btn-danger',
+	                        {title:'Clears all current values',onclick:() => confirm('Are you sure you want to clear the current form?\n This action is permanent') ? ctrl.clear() : null},[
 	                        m('i.far fa-trash-alt fa-sm'), ' Clear'
-	                    ])
-	                ])
-	            ])
-	        ]),
-	        m.component(elementComponent,{key: 'attribute1'} ,settings, defaultSettings.attribute1.stimulusMedia),
-	        m('h1.categoryHeadline','Second Attribute'),
-	        m('.row top-buffer'),
-	        m.component(elementComponent,{key:'attribute2'}, settings, defaultSettings.attribute2.stimulusMedia)
+	                    ]),
+	                ]),
+	            ]),
+	        ])
 	    ]);
 	}
 
 	let importComponent = {
-	    controller:controller$6,
+	    controller:controller$7,
 	    view:view$7
 	};
 
@@ -682,7 +842,7 @@
 	    ]);
 	}
 
-	function controller$6(settings) {
+	function controller$7(settings) {
 	    let fileInput = m.prop('');
 	    return {fileInput:fileInput, handleFile:handleFile, updateSettings:updateSettings};
 
@@ -750,7 +910,8 @@
 
 	let links = {IAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-iat/', 
 		BIAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-biat/',
-		STIAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-stiat/'
+		STIAT: 'https://minnojs.github.io/minnojs-blog/qualtrics-stiat/',
+		SPF: '#'
 	};
 
 	let helpComponent = {
@@ -780,22 +941,24 @@
 	    {name: 'showDebriefing', label:'Show results interpretation at the end', desc: 'Not recommended. A single IAT score is not a reliable estimate of any psychological construct.'},
 	    {name: 'remindError', label: 'Error feedback on incorrect responses', desc: 'It is recommended to show participants an error feedback on error responses.'},
 	    {name: 'errorCorrection', label: 'Require correct response', desc: 'It is recommended to require participants to hit the correct response even after errors.'},
-	    {isTouch:false, isQualtrics:false, fullscreen:false, showDebriefing:false, remindError:false, errorCorrection:false,base_url:''}
+	    {isTouch:false, isQualtrics:false, fullscreen:false, showDebriefing:false, remindError:false, errorCorrection:false, base_url:''}
 	];
 
 	let textDesc=[
-	    {name: 'textOnError', label:'Screen\'s Bottom (error reminder)', desc:'We use this text to remind participants what happens on error. Replace this text if you do not require participants to correct their error responses (see General Parameters page).'},
+	    {name: 'remindErrorText', nameTouch: 'remindErrorTextTouch', label:'Screen\'s Bottom (error reminder)', desc:'We use this text to remind participants what happens on error. Replace this text if you do not require participants to correct their error responses (see General Parameters page).'},
 	    {name: 'leftKeyText', label:'Top-left text (about the left key)', desc: 'We use this text to remind participants what key to use for a left response.'},
 	    {name: 'rightKeyText', label:'Top-right text (about the right key)', desc: 'We use this text to remind participants what key to use for a right response.'},
-	    {name: 'orKeyText', label:'Or', desc: 'We show this text in the combined blocks to separate between the two categories that use the same key.'},
-	    {name: 'AttributesBlockInstructions', label: 'Instructions in Block 1', desc: 'The instructions in the attributes practice block.'},
-	    {name: 'CategoriesBlockInstructions', label: 'Instructions in Block 2', desc: 'The instructions in the categories practice block.'},
-	    {name: 'FirstCombinedBlockInstructions', label: 'Instructions in Blocks 3 and 6', desc: 'The instructions in the first combined (4-groups) block.'},
-	    {name: 'SecondCombinedBlockInstructions', label: 'Instructions in Blocks 4 and 7', desc: 'The instructions in the second combined (4-groups) block.'},
-	    {name: 'SwitchedCategoriesInstructions', label: 'Instructions in Block 5', desc: 'The instructions in the block that provides practice for the reversed categories.'},
-	    {name: 'PreDebriefingText', label: 'Text before showing results', desc: 'Will be used only if you selected (in the General Parameters page) to show the participants an interpretation of the result. We recommend avoiding that.'},
-	    {textOnError:'', leftKeyText:'', rightKeyText:'', orKeyText:'', AttributesBlockInstructions:'',CategoriesBlockInstructions:'',
-	        FirstCombinedBlockInstructions:'', SecondCombinedBlockInstructions:'', SwitchedCategoriesInstructions:'',PreDebriefingText:''}
+	    {name: 'orText', label:'Or', desc: 'We show this text in the combined blocks to separate between the two categories that use the same key.'},
+	    {name: 'instAttributePractice', nameTouch: 'instAttributePracticeTouch', label: 'Instructions in Block 1', desc: 'The instructions in the attributes practice block.'},
+	    {name: 'instCategoriesPractice', nameTouch: 'instCategoriesPracticeTouch', label: 'Instructions in Block 2', desc: 'The instructions in the categories practice block.'},
+	    {name: 'instFirstCombined', nameTouch: 'instFirstCombinedTouch', label: 'Instructions in Blocks 3 and 6', desc: 'The instructions in the first combined (4-groups) block.'},
+	    {name: 'instSecondCombined', nameTouch: 'instSecondCombinedTouch', label: 'Instructions in Blocks 4 and 7', desc: 'The instructions in the second combined (4-groups) block.'},
+	    {name: 'instSwitchCategories', nameTouch: 'instSwitchCategoriesTouch', label: 'Instructions in Block 5', desc: 'The instructions in the block that provides practice for the reversed categories.'},
+	    {name: 'preDebriefingText', nameTouch: 'preDebriefingTouchText', label: 'Text before showing results', desc: 'Will be used only if you selected (in the General Parameters page) to show the participants an interpretation of the result. We recommend avoiding that.'},
+	    {remindErrorText:'', leftKeyText:'', rightKeyText:'', orKeyText:'', instAttributePractice:'',instCategoriesPractice:'',
+	    instFirstCombined:'', instSecondCombined:'', instSwitchCategories:'',preDebriefingText:''},
+	    {remindErrorTextTouch:'', instAttributePracticeTouch:'',instCategoriesPracticeTouch:'',
+	    instFirstCombinedTouch:'', instSecondCombinedTouch:'', instSwitchCategoriesTouch:'',preDebriefingTouchText:''}
 	];
 
 	let blocksDesc = [
@@ -821,14 +984,10 @@
 	    {value: 'categories', text: 'Categories', component: categoriesComponent, rowsDesc: categoryClear},
 	    {value: 'attributes', text: 'Attributes', component: attributesComponent, rowsDesc: categoryClear},
 	    {value: 'text', text: 'Texts', component: textComponent, rowsDesc: textDesc},
-	    {value: 'output', text: 'Complete', component: outputComponent},
+	    {value: 'output', text: 'Complete', component: outputComponent, rowsDesc: blocksDesc},
 	    {value: 'import', text: 'Import', component: importComponent},
 	    {value: 'help', text: 'Help', component: helpComponent, rowsDesc:'IAT'}
 	];
-
-	function clone(obj){
-	    return JSON.parse(JSON.stringify(obj));
-	}
 
 	let iat = {
 	    controller: function(settings$1){ return {settings: settings$1 ? settings$1 : clone(settings)};},
